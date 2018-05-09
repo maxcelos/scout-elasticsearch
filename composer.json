@@ -2,8 +2,7 @@
     "name": "maxcelos/scout-elasticsearch",
     "description": "Add ElasticSearch support to Laravel Scout",
     "require-dev": {
-        "laravel/scout": "^4.0",
-        "elasticsearch/elasticsearch": "^6.0"
+        
     },
     "license": "MIT",
     "authors": [
@@ -12,7 +11,10 @@
             "email": "maxcelos@outlook.com"
         }
     ],
-    "require": {},
+    "require": {
+        "laravel/scout": "^4.0",
+        "elasticsearch/elasticsearch": "^6.0"
+    },
     "autoload": {
         "psr-4": {
             "Maxcelos\\ScoutElasticSearch\\": "src/"
