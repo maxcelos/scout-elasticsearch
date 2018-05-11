@@ -40,11 +40,15 @@ class ElasticSearchEngine extends Engine
             return;
         }
 
+        $prefix = config('scout.prefix');
+
+        $index = $models->first()->searchableAs();
+
         if ($this->usesSoftDelete($models->first()) && config('scout.soft_delete', false)) {
             $models->each->pushSoftDeleteMetadata();
         }
 
-        $body = $models->map(function ($model) {
+        $body = $models->map(function ($model) use ($prefix) {
             $array = array_merge(
                 $model->toSearchableArray(), $model->scoutMetadata()
             );
@@ -53,13 +57,17 @@ class ElasticSearchEngine extends Engine
                 return;
             }
 
-            return array_merge(['objectID' => $model->getScoutKey()], $array);
+            return array_merge([
+                'objectID' => $model->getScoutKey(),
+                '_scout_prefix' => $prefix,
+                '_class' => get_class($model)
+            ], $array);
         });
 
         foreach ($body as $item) {
             $this->elastic->index([
-                'index' => $models->first()->searchableAs(),
-                'type' => $models->first()->searchableAs(),
+                'index' => $index,
+                'type' => $index,
                 'id' => $item['objectID'],
                 'body' => $item
             ]);
@@ -96,7 +104,7 @@ class ElasticSearchEngine extends Engine
     public function search(Builder $builder)
     {
         return $this->performSearch($builder, array_filter([
-            'term' => $this->filters($builder),
+            'filters' => $this->filters($builder),
             'hitsPerPage' => $builder->limit
         ]));
     }
@@ -112,7 +120,7 @@ class ElasticSearchEngine extends Engine
     public function paginate(Builder $builder, $perPage, $page)
     {
         return $this->performSearch($builder, [
-            'term' => $this->filters($builder),
+            'filters' => $this->filters($builder),
             'hitsPerPage' => $perPage,
             'page' => $page - 1,
         ]);
@@ -151,14 +159,14 @@ class ElasticSearchEngine extends Engine
                  *
                  */
                 'query' => [
-                    'bool'=>[
-                        'must'=>[
+                    'bool' => [
+                        'must' => [
                             'query_string' => [
-                                'query' => "*{$builder->query}*" // Ex: 'Marcelo'
+                                'query' => "*{$builder->query}*"
                             ]
                         ],
-                        'filter' => $options['term'] // Ex: ['term' => ['team_id' => 1]
-                    ],
+                        'filter' => $options['filters']
+                    ]
                 ],
 
                 /*
@@ -185,13 +193,16 @@ class ElasticSearchEngine extends Engine
      */
     protected function filters(Builder $builder)
     {
-        if (empty($builder->wheres)){
-            return [];
+        $filter = [];
+
+        foreach ($builder->wheres as $key => $value) {
+            $filter[] = ['term' => [
+                $key => (string)$value
+                ]
+            ];
         }
 
-        return [
-            'term' => $builder->wheres
-        ];
+        return $filter;
     }
 
     /**

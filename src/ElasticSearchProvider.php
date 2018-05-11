@@ -15,8 +15,7 @@ class ElasticSearchProvider extends ServiceProvider
         app(EngineManager::class)->extend('elastic_search', function($app) {
             return new ElasticSearchEngine(ElasticBuilder::create()
                 ->setHosts(config('scout.elastic_search.hosts'))
-                ->build(),
-                config('scout.elastic_search.index')
+                ->build()
             );
         });
     }
