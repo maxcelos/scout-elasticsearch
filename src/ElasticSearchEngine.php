@@ -245,6 +245,8 @@ class ElasticSearchEngine extends Engine
             $key = $hit['_id'];
 
             if (isset($models[$key])) {
+                $models[$key]->highlights = $hit['highlight'];
+                
                 return $models[$key];
             }
         })->filter()->values();
