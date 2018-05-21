@@ -165,7 +165,7 @@ class ElasticSearchEngine extends Engine
                                 'query' => "*{$builder->query}*"
                             ]
                         ],
-                        'filter' => $options['filters']
+                        'filter' => isset($options['filters']) ? $options['filters'] : []
                     ]
                 ],
 
