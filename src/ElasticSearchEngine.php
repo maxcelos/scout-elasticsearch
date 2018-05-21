@@ -65,7 +65,7 @@ class ElasticSearchEngine extends Engine
         });
 
         foreach ($body as $item) {
-            $this->elastic->index([
+            $test = $this->elastic->index([
                 'index' => $index,
                 'type' => $index,
                 'id' => $item['objectID'],
@@ -144,7 +144,7 @@ class ElasticSearchEngine extends Engine
         }
 
         $params = [
-            'index' => $builder->model->searchableAs(), // Ex: 'customers'
+            'index' => $builder->model->searchableAs(), // Ex: 'local_customers'
 
             'body' => [
                 /*
@@ -181,6 +181,8 @@ class ElasticSearchEngine extends Engine
                 ]
             ]
         ];
+
+        //dd($this->elastic->info());
 
         return $this->elastic->search($params);
     }
