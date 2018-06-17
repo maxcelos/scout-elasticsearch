@@ -111,4 +111,4 @@ Of course this is recommended only if all applications belongs to the same compa
 
 **Maxcelos** is a trademark of Marcelo Barros da Silva, independent professional.
 
-Visit [maxcelos.com](maxcelos.com) and [maxcelos.github.io](maxcelos.github.io).
+Visit [maxcelos.com](https://maxcelos.com) and [maxcelos.github.io](https://maxcelos.github.io).
