@@ -1,6 +1,6 @@
 # Scout ElasticSearch Driver
 
-<p align="center">
+<p>
 <a href="https://packagist.org/packages/maxcelos/scout-elasticsearch"><img src="https://poser.pugx.org/maxcelos/scout-elasticsearch/d/total.svg" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/maxcelos/scout-elasticsearch"><img src="https://poser.pugx.org/maxcelos/scout-elasticsearch/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/maxcelos/scout-elasticsearch"><img src="https://poser.pugx.org/maxcelos/scout-elasticsearch/license.svg" alt="License"></a>
