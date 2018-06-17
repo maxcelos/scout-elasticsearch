@@ -17,16 +17,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Maxcelos\\ScoutElasticSearch\\": "src/"
+            "Maxcelos\\ElasticSearch\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Maxcelos\\ScoutElasticSearch\\ElasticSearchProvider"
+                "Maxcelos\\ElasticSearch\\ElasticSearchProvider"
             ],
             "aliases": {
-                "ScoutElasticSearch": "Maxcelos\\ScoutElasticSearch\\ScoutElasticSearchFacade"
+                "ScoutElasticSearch": "Maxcelos\\ElasticSearch\\ElasticSearchFacade"
             }
         }
     }

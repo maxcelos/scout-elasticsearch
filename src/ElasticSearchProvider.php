@@ -1,5 +1,5 @@
 <?php
-namespace Maxcelos\ScoutElasticSearch;
+namespace Maxcelos\ElasticSearch;
 
 use Laravel\Scout\EngineManager;
 use Illuminate\Support\ServiceProvider;
@@ -12,9 +12,13 @@ class ElasticSearchProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadRoutesFrom(__DIR__ . '/routes.php');
+
+        $this->publishes([$this->configPath() => config_path('elasticsearch.php')], 'config');
+
         app(EngineManager::class)->extend('elastic_search', function($app) {
 
-            $config = config('scout.elastic_search.config');
+            $config = config('elasticsearch.config');
 
             return new ElasticSearchEngine(ElasticBuilder::create()
                 ->setHosts([
@@ -23,5 +27,20 @@ class ElasticSearchProvider extends ServiceProvider
                 ->build()
             );
         });
+    }
+
+    public function register()
+    {
+        $this->mergeConfigFrom($this->configPath(), 'elasticsearch');
+    }
+
+    /**
+     * Path to configuration file.
+     *
+     * @return string
+     */
+    public function configPath(): string
+    {
+        return realpath(__DIR__ . '/../install-stubs/config/elasticsearch.php');
     }
 }

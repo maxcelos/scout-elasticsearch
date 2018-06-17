@@ -1,16 +1,12 @@
 <?php
 
-namespace Maxcelos\ScoutElasticSearch;
+namespace Maxcelos\ElasticSearch;
 
-use Illuminate\Database\Eloquent\Collection;
 use \Illuminate\Support\Facades\Facade;
 use Elasticsearch\ClientBuilder as ElasticBuilder;
-use Laravel\Scout\Builder;
-use function Symfony\Component\VarDumper\Dumper\esc;
 
-class ScoutElasticSearchFacade extends Facade
+class ElasticSearchFacade extends Facade
 {
-
     /**
      * @param string $query
      * @param int    $hitsPerPage
@@ -21,8 +17,12 @@ class ScoutElasticSearchFacade extends Facade
      */
     public static function globalSearch($query, $hitsPerPage = 1000, $page = 1, $where = [])
     {
+        $config = config('elasticsearch.config');
+
         $es = ElasticBuilder::create()
-            ->setHosts(config('scout.elastic_search.hosts'))
+            ->setHosts([
+                "{$config['scheme']}://{$config['user']}:{$config['pass']}@{$config['host']}:{$config['port']}"
+            ])
             ->build();
 
         $params = [
@@ -75,6 +75,11 @@ class ScoutElasticSearchFacade extends Facade
                 ]
             ];
         }
+
+        $filter[] = ['term' => [
+            '_scout_prefix' => config('scout.prefix')
+        ]
+        ];
 
         return $filter;
     }

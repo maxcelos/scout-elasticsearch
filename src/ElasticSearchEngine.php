@@ -1,6 +1,6 @@
 <?php
 
-namespace Maxcelos\ScoutElasticSearch;
+namespace Maxcelos\ElasticSearch;
 
 use Laravel\Scout\Engines\Engine;
 use Elasticsearch\Client;
